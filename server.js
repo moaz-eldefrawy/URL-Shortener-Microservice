@@ -40,7 +40,15 @@ app.get("*", function (req, res) {
     res.error = "This url is not on the database.";
   
   else{
-    MongoClient.connect()
+    MongoClient.connect(dbUrl, function(err, db){
+      if(err) console.log("Unable to connect to MongoDB");
+      else{
+        var urlsColl = db.collection('urls');
+        var randomNumber = Math.random() * 1000;
+        console.lo
+        urlsColl.insert({})
+      }
+    })
   }
   
   res.end(JSON.stringify(response));
@@ -53,15 +61,15 @@ var MongoClient = mongodb.MongoClient;
 
 // Connection URL. This is where your mongodb server is running.
 //(Focus on This Variable)
-var dburl = 'mongodb://first:first@ds147072.mlab.com:47072/links';      
+var dbUrl = 'mongodb://first:first@ds147072.mlab.com:47072/links';      
 //(Focus on This Variable)
 
 // Use connect method to connect to the Server
-MongoClient.connect(url, function (err, db) {
+MongoClient.connect(dbUrl, function (err, db) {
   if (err) {
     console.log('Unable to connect to the mongoDB server. Error:', err);
   } else {
-    console.log('Connection established to', url);
+    console.log('Connection established to', dbUrl);
     // do some work here with the database.
     
     //Close connection
