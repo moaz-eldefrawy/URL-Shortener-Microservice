@@ -22,29 +22,30 @@ app.get("/", function(req, res){
 
 app.get("/new/*", function(req, res){
   var url = req.url.substring(5, req.url.length);
-  var response = {};
+  var answer = {};
   if(url.length == 0)
-    res.end("Please Enter a proper Url");
+    answer.error = "please enter a proper url";
   
   if(validateUrl(url) == false) 
-    response.error = "This url is not a valid url";
+    answer.error = "This url is not a valid url";
   
   else{
     MongoClient.connect(dbUrl, function(err, db){
       if(err) console.log("Unable to connect to MongoDB");
       else{
         var urlsColl = db.collection('urls');
-        var randomNumber = (Math.random() * 1000).toSting();
+        var randomNumber = Math.random() * 10000;
         console.log(randomNumber+ ": " + url);
         urlsColl.insert({randomNumber: url});
+       answer.original_url = url;
+        answer.short_url = "https://url-shortener-microservice-moaz.glitch.me/" + randomNumber;
+      
         db.close();
-        response.original_url = url;
-        response.short_url = "https://url-shortener-microservice-moaz.glitch.me/" + randomNumber;
-      }
+       }
     })
   }
-  
-  res.end(JSON.stringify(response));
+  res.writeHead(200, {'Content-type': 'applacation/json'})
+  res.end(JSON.stringify(answer));
   
 })
 
