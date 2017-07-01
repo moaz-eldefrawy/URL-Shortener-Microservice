@@ -31,22 +31,25 @@ app.get("/new", function(req, res){
 })
 
 // handling requests
-app.get("*", function (req, res) {
+app.get("/new", function (req, res) {
   console.log("running");
   var response = {};
   res.send(req.url);
   var url = req.url.substring(0, req.url.length);
   if(validateUrl(url) == false) 
-    res.error = "This url is not on the database.";
+    response.error = "This url is not on the database.";
   
   else{
     MongoClient.connect(dbUrl, function(err, db){
       if(err) console.log("Unable to connect to MongoDB");
       else{
         var urlsColl = db.collection('urls');
-        var randomNumber = Math.random() * 1000;
-        console.lo
-        urlsColl.insert({})
+        var randomNumber = (Math.random() * 1000).toSting();
+        console.log(randomNumber+ ": " + url);
+        urlsColl.insert({randomNumber: url});
+        db.close();
+        response.original_url = url;
+        response.short_url = "https://url-shortener-microservice-moaz.glitch.me/" + randomNumber;
       }
     })
   }
