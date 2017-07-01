@@ -20,16 +20,6 @@ app.get("/", function(req, res){
 });
 
 
-app.get("/*", function(req, res){
-  res.end("you have entered a number");
-  MongoClient.connect(dbUrl, function(err, db){
-    if(err) console.log("Unable to connect to MongoDB");
-    else{
-      var urlsColl = db.collection('urls')
-      
-    }
-  })
-})
 
 app.get("/new/*", function(req, res){
   var url = req.url.substring(5, req.url.length);
@@ -42,7 +32,7 @@ app.get("/new/*", function(req, res){
     answer.error = "This url is not a valid url";
   
   else{
-    MongoClient.connect(dbUrl, function(err, db){
+    MongoClient.connect(dbUrl, function(err, db){ 
       if(err) console.log("Unable to connect to MongoDB");
       else{
         var urlsColl = db.collection('urls');
@@ -51,14 +41,27 @@ app.get("/new/*", function(req, res){
         urlsColl.insert({randomNumber: url});
         answer.original_url = url;
         answer.short_url = "https://url-shortener-microservice-moaz.glitch.me/" + randomNumber.toString();
-        console.log(answer);
-        res.end(JSON.stringify(answer));
         db.close();
        }
       res.end(JSON.stringify(answer));
     })
   }
+  if(answer.error.length != 0) 
+  res.end(JSON.stringify(answer));
+    
 })
+
+app.get("/*", function(req, res){
+  res.end("you have entered a number");
+  MongoClient.connect(dbUrl, function(err, db){
+    if(err) console.log("Unable to connect to MongoDB");
+    else{
+      var urlsColl = db.collection('urls')
+      
+    }
+  })
+})
+
 
 // handling requests/()
 /*
