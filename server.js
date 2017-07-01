@@ -19,7 +19,17 @@ app.get("/", function(req, res){
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
-app.get("/")
+
+app.get("/*", function(req, res){
+  res.end("you have entered a number");
+  MongoClient.connect(dbUrl, function(err, db){
+    if(err) console.log("Unable to connect to MongoDB");
+    else{
+      var urlsColl = db.collection('urls')
+      
+    }
+  })
+})
 
 app.get("/new/*", function(req, res){
   var url = req.url.substring(5, req.url.length);
