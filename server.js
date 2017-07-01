@@ -20,24 +20,14 @@ app.get("/", function(req, res){
 });
 
 
-app.get("/new", function(req, res){
+app.get("/new/*", function(req, res){
   var url = req.url.substring(5, req.url.length);
+  var response = {};
   if(url.length == 0)
     res.end("Please Enter a proper Url");
   
-  else{
-    
-  }
-})
-
-// handling requests
-app.get("/new", function (req, res) {
-  console.log("running");
-  var response = {};
-  res.send(req.url);
-  var url = req.url.substring(0, req.url.length);
   if(validateUrl(url) == false) 
-    response.error = "This url is not on the database.";
+    response.error = "This url is not a valid url";
   
   else{
     MongoClient.connect(dbUrl, function(err, db){
@@ -55,7 +45,15 @@ app.get("/new", function (req, res) {
   }
   
   res.end(JSON.stringify(response));
-});
+  
+})
+
+// handling requests/()
+/*
+app.get("*", function (req, res) {
+  console.log("running");
+  res.end()
+});*/
 
 
 var mongodb = require('mongodb');
