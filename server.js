@@ -23,10 +23,11 @@ app.get("/", function(req, res){
 app.get("/new/*", function(req, res){
   var url = req.url.substring(5, req.url.length);
   var answer = {};
+  res.writeHead(200, {'Content-Type': 'application/json'})
   if(url.length == 0)
     answer.error = "please enter a proper url";
   
-  if(validateUrl(url) == false) 
+  else if(validateUrl(url) == false) 
     answer.error = "This url is not a valid url";
   
   else{
@@ -34,19 +35,18 @@ app.get("/new/*", function(req, res){
       if(err) console.log("Unable to connect to MongoDB");
       else{
         var urlsColl = db.collection('urls');
-        var randomNumber = Math.random() * 10000;
+        var randomNumber = Math.round(Math.random() * 10000);
         console.log(randomNumber+ ": " + url);
         urlsColl.insert({randomNumber: url});
-       answer.original_url = url;
-        answer.short_url = "https://url-shortener-microservice-moaz.glitch.me/" + randomNumber;
-      
+        answer.original_url = url;
+        answer.short_url = "https://url-shortener-microservice-moaz.glitch.me/" + randomNumber.toString();
+        console.log(answer);
+        res.end(JSON.stringify(answer));
         db.close();
        }
+      res.end(JSON.stringify(answer));
     })
   }
-  res.writeHead(200, {'Content-type': 'applacation/json'})
-  res.end(JSON.stringify(answer));
-  
 })
 
 // handling requests/()
