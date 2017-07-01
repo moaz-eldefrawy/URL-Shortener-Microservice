@@ -16,12 +16,23 @@ function validateUrl(value) {
 }
 
 app.get("/", function(req, res){
-  res.sendFile(process.cwd() + '/views/index.html')
+  res.sendFile(process.cwd() + '/views/index.html');
 });
+
+
+app.get("/new", function(req, res){
+  var url = req.url.substring(5, req.url.length);
+  if(url.length == 0)
+    res.end("Please Enter a proper Url");
+  
+  else{
+    
+  }
+})
 
 // handling requests
 app.get("*", function (req, res) {
-  
+  console.log("running");
   var response = {};
   res.send(req.url);
   var url = req.url.substring(0, req.url.length);
@@ -29,7 +40,7 @@ app.get("*", function (req, res) {
     res.error = "This url is not on the database.";
   
   else{
-    
+    MongoClient.connect()
   }
   
   res.end(JSON.stringify(response));
@@ -42,7 +53,7 @@ var MongoClient = mongodb.MongoClient;
 
 // Connection URL. This is where your mongodb server is running.
 //(Focus on This Variable)
-var url = 'mongodb://first:first@ds147072.mlab.com:47072/links';      
+var dburl = 'mongodb://first:first@ds147072.mlab.com:47072/links';      
 //(Focus on This Variable)
 
 // Use connect method to connect to the Server
