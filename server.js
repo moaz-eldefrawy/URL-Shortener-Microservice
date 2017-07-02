@@ -15,12 +15,13 @@ function validateUrl(value) {
   return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
 }
 
+// hompage
 app.get("/", function(req, res){
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
 
-
+// ge
 app.get("/new/*", function(req, res){
   var url = req.url.substring(5, req.url.length);
   var answer = {};
@@ -38,8 +39,7 @@ app.get("/new/*", function(req, res){
         var urlsColl = db.collection('urls');
         var randomNumber = Math.round(Math.random() * 10000).toString();
         console.log(randomNumber+ ": " + url);
-        var obj; obj.
-        urlsColl.insert( {4124: url} );
+        urlsColl.insert( {[randomNumber]: url} );
         answer.original_url = url;
         answer.short_url = "https://url-shortener-microservice-moaz.glitch.me/" + randomNumber.toString();
         db.close();
