@@ -67,9 +67,9 @@ app.get("/*", function(req, res){
          res.end("Enter a proper shortcut")
        }
        db.close();
-       c
-       console.log(docs.url);
-       res.writeHead(301, {location: docs.url});
+       console.log(docs);
+       console.log(docs[0][url]);
+       res.writeHead(301, {location: docs[0][url]});
        res.end();
      })
     }
