@@ -21,7 +21,7 @@ app.get("/", function(req, res){
 });
 
 
-// ge
+// getting a short URL
 app.get("/new/*", function(req, res){
   var url = req.url.substring(5, req.url.length);
   var answer = {};
@@ -52,13 +52,18 @@ app.get("/new/*", function(req, res){
     
 })
 
+// using a short URL
 app.get("/*", function(req, res){
-  res.end("you have entered a number");
+  res.writeHead(200, {'Contety'})
+  var url = req.url.substring(1, req.url.length);
   MongoClient.connect(dbUrl, function(err, db){
     if(err) console.log("Unable to connect to MongoDB");
     else{
-      var urlsColl = db.collection('urls')
-      
+      var urlsColl = db.collection('urls');
+     urlsColl.find( { [url]: { 'exists' : true } } ).toArray(function(err, docs){
+       console.log(docs);
+       
+     })
     }
   })
 })
