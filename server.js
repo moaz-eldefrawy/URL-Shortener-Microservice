@@ -36,9 +36,10 @@ app.get("/new/*", function(req, res){
       if(err) console.log("Unable to connect to MongoDB");
       else{
         var urlsColl = db.collection('urls');
-        var randomNumber = Math.round(Math.random() * 10000);
+        var randomNumber = Math.round(Math.random() * 10000).toString();
         console.log(randomNumber+ ": " + url);
-        urlsColl.insert({randomNumber: url});
+        var obj; obj.
+        urlsColl.insert( {4124: url} );
         answer.original_url = url;
         answer.short_url = "https://url-shortener-microservice-moaz.glitch.me/" + randomNumber.toString();
         db.close();
@@ -46,8 +47,8 @@ app.get("/new/*", function(req, res){
       res.end(JSON.stringify(answer));
     })
   }
-  if(answer.error.length != 0) 
-  res.end(JSON.stringify(answer));
+  if ('error' in answer)
+    res.end(JSON.stringify(answer));
     
 })
 
