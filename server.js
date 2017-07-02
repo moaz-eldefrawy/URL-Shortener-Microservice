@@ -54,15 +54,23 @@ app.get("/new/*", function(req, res){
 
 // using a short URL
 app.get("/*", function(req, res){
-  res.writeHead(200, {'Contety'})
+  
   var url = req.url.substring(1, req.url.length);
   MongoClient.connect(dbUrl, function(err, db){
     if(err) console.log("Unable to connect to MongoDB");
     else{
       var urlsColl = db.collection('urls');
-     urlsColl.find( { [url]: { 'exists' : true } } ).toArray(function(err, docs){
-       console.log(docs);
-       
+     urlsColl.find( { [url]: { '$exists' : true } } ).toArray(function(err, docs){
+       if(err) console.log(err);
+       if(docs.length == 0){
+         res.writeHead(200, {'content-type': 'text/plain'})
+         res.end("Enter a proper shortcut")
+       }
+       db.close();
+       c
+       console.log(docs.url);
+       res.writeHead(301, {location: docs.url});
+       res.end();
      })
     }
   })
